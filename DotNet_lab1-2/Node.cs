@@ -46,7 +46,7 @@ namespace DotNet_lab1_2
             }
         }
 
-        public bool Find(T data)
+        public bool Contains(T data)
         {
             var node = new Node<T>(data);
 
@@ -58,11 +58,11 @@ namespace DotNet_lab1_2
             }
             else if (comparisonResult < 0 && Left != null)
             {
-                return Left.Find(data);
+                return Left.Contains(data);
             }
             else if (comparisonResult > 0 && Right != null)
             {
-                return Right.Find(data);
+                return Right.Contains(data);
             }
 
             return false;
