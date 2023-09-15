@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DotNet_lab1_2
 {
-    public class Node<T> : IComparable<T>
+    public class Node<T>
         where T : IComparable<T>
     {
         public T Data { get; set; }
