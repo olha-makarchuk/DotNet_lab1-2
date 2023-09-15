@@ -68,6 +68,53 @@ namespace DotNet_lab1_2
             return false;
         }
 
+
+        public Node<T> Remove(Node<T> node, T data)
+        {
+            if (node == null)
+            {
+                return null;
+            }
+
+            int comparisonResult = data.CompareTo(node.Data);
+
+            if (comparisonResult < 0)
+            {
+                node.Left = Remove(node.Left, data);
+            }
+            else if (comparisonResult > 0)
+            {
+                node.Right = Remove(node.Right, data);
+            }
+            else
+            {
+                if (node.Left == null)
+                {
+                    return node.Right;
+                }
+                else if (node.Right == null)
+                {
+                    return node.Left;
+                }
+
+                T minValue = FindMinValue(node.Right);
+                node.Data = minValue;
+                node.Right = Remove(node.Right, minValue);
+            }
+
+            return node;
+        }
+
+        private T FindMinValue(Node<T> node)
+        {
+            while (node.Left != null)
+            {
+                node = node.Left;
+            }
+
+            return node.Data;
+        }
+
         public int CompareTo(T other)
         {
             return Data.CompareTo(other);

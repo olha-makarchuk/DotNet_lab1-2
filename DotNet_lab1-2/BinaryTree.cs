@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DotNet_lab1_2
 {
@@ -99,58 +100,12 @@ namespace DotNet_lab1_2
 
             if (success)
             {
-                Root = Remove(Root, data);
+                Root.Remove(Root, data);
                 Count--;
                 InvokeItemRemoved(data);
             }
 
             return success;
-        }
-
-        private Node<T> Remove(Node<T> node, T data)
-        {
-            if (node == null)
-            {
-                return null;
-            }
-
-            int comparisonResult = data.CompareTo(node.Data);
-
-            if (comparisonResult < 0)
-            {
-                node.Left = Remove(node.Left, data);
-            }
-            else if (comparisonResult > 0)
-            {
-                node.Right = Remove(node.Right, data);
-            }
-            else
-            {
-                if (node.Left == null)
-                {
-                    return node.Right;
-                }
-                else if (node.Right == null)
-                {
-                    return node.Left;
-                }
-
-                T minValue = FindMinValue(node.Right);
-                node.Data = minValue;
-                node.Right = Remove(node.Right, minValue);
-            }
-
-            return node;
-        }
-
-        private T FindMinValue(Node<T> node)
-        {
-            while (node.Left != null)
-            {
-                node = node.Left;
-            }
-
-            return node.Data;
         }
 
         public MyList<T> Preorder()
