@@ -56,7 +56,102 @@ namespace DotNet_lab1_2
 
             return false;
         }
+        public void Clean()
+        {
+            Root = null;
+            Count = 0;
+            ItemCleaned?.Invoke(this, EventArgs.Empty);
 
+        }
+
+        public void Balance()
+        {
+            var inorderList = Inorder();
+            T[] sortedArray = inorderList.ToArray();
+            Root = CreateBalancedBST(sortedArray, 0, sortedArray.Length - 1);
+            Count = sortedArray.Length;
+        }
+
+        private Node<T> CreateBalancedBST(T[] sortedArray, int start, int end)
+        {
+            if (start > end)
+            {
+                return null;
+            }
+
+            int mid = (start + end) / 2;
+            Node<T> newNode = new Node<T>(sortedArray[mid]);
+
+            newNode.Left = CreateBalancedBST(sortedArray, start, mid - 1);
+            newNode.Right = CreateBalancedBST(sortedArray, mid + 1, end);
+
+            return newNode;
+        }
+
+        public bool Remove(T data)
+        {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data), "Data cannot be null.");
+            }
+
+            bool success = Contains(data);
+
+            if (success)
+            {
+                Root = Remove(Root, data);
+                Count--;
+                InvokeItemRemoved(data);
+            }
+
+            return success;
+        }
+
+        private Node<T> Remove(Node<T> node, T data)
+        {
+            if (node == null)
+            {
+                return null;
+            }
+
+            int comparisonResult = data.CompareTo(node.Data);
+
+            if (comparisonResult < 0)
+            {
+                node.Left = Remove(node.Left, data);
+            }
+            else if (comparisonResult > 0)
+            {
+                node.Right = Remove(node.Right, data);
+            }
+            else
+            {
+                if (node.Left == null)
+                {
+                    return node.Right;
+                }
+                else if (node.Right == null)
+                {
+                    return node.Left;
+                }
+
+                T minValue = FindMinValue(node.Right);
+                node.Data = minValue;
+                node.Right = Remove(node.Right, minValue);
+            }
+
+            return node;
+        }
+
+        private T FindMinValue(Node<T> node)
+        {
+            while (node.Left != null)
+            {
+                node = node.Left;
+            }
+
+            return node.Data;
+        }
 
         public MyList<T> Preorder()
         {
