@@ -20,6 +20,11 @@ namespace DotNet_lab1_2
 
         public void Add(T item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item), "Element cannot be null");
+            }
+
             if (count == items.Length)
             {
                 Array.Resize(ref items, items.Length * 2);
@@ -30,6 +35,11 @@ namespace DotNet_lab1_2
 
         public void AddRange(IEnumerable<T> collection)
         {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection), "Collection cannot be null");
+            }
+
             foreach (var item in collection)
             {
                 Add(item);
