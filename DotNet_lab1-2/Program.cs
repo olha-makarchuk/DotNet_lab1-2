@@ -45,5 +45,10 @@ foreach (var item in tree.Preorder())
     Console.Write(item + ", ");
 }
 
+int contains_element1 = 8;
+int contains_element2 = 5;
+Console.WriteLine("\n\nНаявнiсть елемента " + contains_element1+ " - " + tree.Contains(contains_element1));
+Console.WriteLine("Наявнiсть елемента " + contains_element2 + " - " + tree.Contains(contains_element2));
+
 Console.Read();
 
