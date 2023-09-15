@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DotNet_lab1_2
 {
-    public class BinaryTree<T>
+    public class BinaryTree<T>: ICollection<T>
         where T : IComparable<T>
     {
         public event EventHandler<BinaryTreeEventsArgs<T>> ItemAdded;
@@ -17,6 +17,8 @@ namespace DotNet_lab1_2
 
         public Node<T> Root { get; private set; }
         public int Count { get; private set; }
+
+        public bool IsReadOnly => throw new NotImplementedException();
 
         public void Add(T data)
         {
@@ -57,7 +59,7 @@ namespace DotNet_lab1_2
 
             return false;
         }
-        public void Clean()
+        public void Clear()
         {
             Root = null;
             Count = 0;
@@ -204,6 +206,44 @@ namespace DotNet_lab1_2
         private void InvokeItemContained(T data) => ItemContained?.Invoke(this, new BinaryTreeEventsArgs<T>(data));
         private void InvokeItemRemoved(T data) => ItemRemoved?.Invoke(this, new BinaryTreeEventsArgs<T>(data));
 
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            if (array == null)
+            {
+                throw new ArgumentNullException(nameof(array), "The destination array cannot be null.");
+            }
 
+            if (arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Array index cannot be negative.");
+            }
+
+            if (array.Length - arrayIndex < Count)
+            {
+                throw new ArgumentException("The destination array does not have enough space.");
+            }
+
+            CopyTo(Root, array, ref arrayIndex);
+        }
+
+        private void CopyTo(Node<T> node, T[] array, ref int index)
+        {
+            if (node != null)
+            {
+                array[index++] = node.Data;
+                CopyTo(node.Left, array, ref index);
+                CopyTo(node.Right, array, ref index);
+            }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
