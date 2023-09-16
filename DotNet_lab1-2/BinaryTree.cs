@@ -18,7 +18,7 @@ namespace DotNet_lab1_2
         public Node<T> Root { get; private set; }
         public int Count { get; private set; }
 
-        public bool IsReadOnly => throw new NotImplementedException();
+        public bool IsReadOnly => false;
 
         public void Add(T data)
         {
