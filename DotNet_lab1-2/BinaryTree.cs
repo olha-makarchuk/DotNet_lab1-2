@@ -202,10 +202,6 @@ namespace DotNet_lab1_2
             return list;
         }
 
-        private void InvokeItemAdded(T data) => ItemAdded?.Invoke(this, new BinaryTreeEventsArgs<T>(data));
-        private void InvokeItemContained(T data) => ItemContained?.Invoke(this, new BinaryTreeEventsArgs<T>(data));
-        private void InvokeItemRemoved(T data) => ItemRemoved?.Invoke(this, new BinaryTreeEventsArgs<T>(data));
-
         public void CopyTo(T[] array, int arrayIndex)
         {
             if (array == null)
@@ -235,15 +231,19 @@ namespace DotNet_lab1_2
                 CopyTo(node.Right, array, ref index);
             }
         }
-
+        
+        private void InvokeItemAdded(T data) => ItemAdded?.Invoke(this, new BinaryTreeEventsArgs<T>(data));
+        private void InvokeItemContained(T data) => ItemContained?.Invoke(this, new BinaryTreeEventsArgs<T>(data));
+        private void InvokeItemRemoved(T data) => ItemRemoved?.Invoke(this, new BinaryTreeEventsArgs<T>(data));
+        
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return Preorder().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }
