@@ -45,19 +45,46 @@ namespace DotNet_lab1_2
                 Add(item);
             }
         }
-
-
         public IEnumerator<T> GetEnumerator()
         {
-            for (int i = 0; i < count; i++)
-            {
-                yield return items[i];
-            }
+            return new MyListEnumerator(this);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private class MyListEnumerator : IEnumerator<T>
+        {
+            private readonly MyList<T> list;
+            private int index;
+
+            public MyListEnumerator(MyList<T> list)
+            {
+                this.list = list;
+                index = -1;
+            }
+
+            public T Current => list.items[index];
+
+            object IEnumerator.Current => Current;
+
+            public bool MoveNext()
+            {
+                index++;
+                return index < list.count;
+            }
+
+            public void Reset()
+            {
+                index = -1;
+            }
+
+            public void Dispose()
+            {
+                // Немає необхідності в ресурсах для вивільнення
+            }
         }
     }
 }
