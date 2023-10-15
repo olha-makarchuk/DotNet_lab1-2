@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace DotNet_lab1_2
 {
     public class BinaryTree<T>: ICollection<T>
-        where T : IComparable<T>
     {
         public event EventHandler<BinaryTreeEventsArgs<T>> ItemAdded;
         public event EventHandler<BinaryTreeEventsArgs<T>> ItemContained;

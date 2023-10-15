@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace DotNet_lab1_2
 {
     public class Node<T>
-        where T : IComparable<T>
     {
         public T Data { get; set; }
         public Node<T> Left { get; set; }
@@ -18,11 +17,20 @@ namespace DotNet_lab1_2
             Data = data;
         }
 
+        public int Compare(T x, T y)
+        {
+            if (x is IComparable<T> comparable)
+            {
+                return comparable.CompareTo(y);
+            }
+            throw new ArgumentException("Type T must implement IComparable<T>");
+        }
+
         public void Add(T data)
         {
             var node = new Node<T>(data);
 
-            if (node.CompareTo(Data) == -1)
+            if (Compare(data, Data) < 0)
             {
                 if (Left == null)
                 {
@@ -48,9 +56,7 @@ namespace DotNet_lab1_2
 
         public bool Contains(T data)
         {
-            var node = new Node<T>(data);
-
-            int comparisonResult = node.CompareTo(Data);
+            int comparisonResult = Compare(data, Data);
 
             if (comparisonResult == 0)
             {
@@ -68,15 +74,9 @@ namespace DotNet_lab1_2
             return false;
         }
 
-
         public Node<T> Remove(Node<T> node, T data)
         {
-            if (node == null)
-            {
-                return null;
-            }
-
-            int comparisonResult = data.CompareTo(node.Data);
+            int comparisonResult = Compare(data, node.Data);
 
             if (comparisonResult < 0)
             {
@@ -88,7 +88,11 @@ namespace DotNet_lab1_2
             }
             else
             {
-                if (node.Left == null)
+                if (node.Left == null && node.Right == null)
+                {
+                    return null;
+                }
+                else if (node.Left == null)
                 {
                     return node.Right;
                 }
@@ -113,11 +117,6 @@ namespace DotNet_lab1_2
             }
 
             return node.Data;
-        }
-
-        public int CompareTo(T other)
-        {
-            return Data.CompareTo(other);
         }
     }
 }
