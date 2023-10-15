@@ -92,16 +92,19 @@ namespace DotNet_lab1_2
 
         public bool Remove(T data)
         {
-            if (data == null)
-            {
-                throw new ArgumentNullException(nameof(data), "Data cannot be null.");
-            }
-
             bool success = Contains(data);
 
+            if (Root == null)
+            {
+                throw new InvalidOperationException("Cannot remove from an empty tree.");
+            }
+            if (!success)
+            {
+                throw new ArgumentException(nameof(Root.Data), "The element is not contains in collection.");
+            }
             if (success)
             {
-                Root.Remove(Root, data);
+                Root = Root.Remove(Root, data);
                 Count--;
                 InvokeItemRemoved(data);
             }
