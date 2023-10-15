@@ -10,12 +10,12 @@ namespace DotNet_lab1_2
     public class MyList<T> : IEnumerable<T>
     {
         private T[] items;
-        private int count;
+        public int Count;
 
         public MyList()
         {
             items = new T[4];
-            count = 0;
+            Count = 0;
         }
 
         public void Add(T item)
@@ -25,12 +25,12 @@ namespace DotNet_lab1_2
                 throw new ArgumentNullException(nameof(item), "Element cannot be null");
             }
 
-            if (count == items.Length)
+            if (Count == items.Length)
             {
                 Array.Resize(ref items, items.Length * 2);
             }
-            items[count] = item;
-            count++;
+            items[Count] = item;
+            Count++;
         }
 
         public void AddRange(IEnumerable<T> collection)
@@ -45,6 +45,27 @@ namespace DotNet_lab1_2
                 Add(item);
             }
         }
+
+        public T this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= Count)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range");
+                }
+                return items[index];
+            }
+            set
+            {
+                if (index < 0 || index >= Count)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range");
+                }
+                items[index] = value;
+            }
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
             return new MyListEnumerator(this);
@@ -70,10 +91,11 @@ namespace DotNet_lab1_2
 
             object IEnumerator.Current => Current;
 
+
             public bool MoveNext()
             {
                 index++;
-                return index < list.count;
+                return index < list.Count;
             }
 
             public void Reset()
