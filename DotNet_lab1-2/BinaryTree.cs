@@ -30,7 +30,7 @@ namespace DotNet_lab1_2
             {
                 Root = new Node<T>(data);
                 Count = 1;
-                ItemAdded?.Invoke(this, new BinaryTreeEventsArgs<T>(data));
+                InvokeItemAdded(data);
                 return;
             }
 
@@ -206,11 +206,6 @@ namespace DotNet_lab1_2
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (array == null)
-            {
-                throw new ArgumentNullException(nameof(array), "The destination array cannot be null.");
-            }
-
             if (arrayIndex < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Array index cannot be negative.");
